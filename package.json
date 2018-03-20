@@ -1,0 +1,25 @@
+{
+  "name": "test-koa",
+  "version": "1.0.0",
+  "description": "h",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doingSth/test-koa.git"
+  },
+  "author": "yongqiang.shen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/doingSth/test-koa/issues"
+  },
+  "homepage": "https://github.com/doingSth/test-koa#readme",
+  "dependencies": {
+    "koa": "^2.5.0",
+    "koa-bodyparser": "^4.2.0",
+    "koa-router": "^7.4.0",
+    "mysql": "^2.15.0"
+  }
+}
