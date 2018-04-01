@@ -1,15 +1,17 @@
-var dateformat = require('dateformat')
+var optMap = {
+  'delete': '0'
+}
 module.exports = {
 	method: 'post',
-	path: '/kd/demand/save',
+	path: '/kd/demand/opt',
 	func: async(cxt, next) => {
     var params = cxt.request.body
-    if (!params.name || !params.wxId) {
+    if (!params.id || !params.type || !params.wxId || !optMap[params.type]) {
       console.log(JSON.stringify(params))
-      console.log('!params.name || !params.wxId is true')
+      console.log('!params.id || !params.type || !params.wxId || !optMap[params.type] is true')
       cxt.returnJson({
         code: 500,
-        msg: '!params.name || !params.wxId is true'
+        msg: '!params.id || !params.type || !params.wxId || !optMap[params.type] is true'
       })
       return
     }
@@ -28,25 +30,24 @@ module.exports = {
       })
       return
     }
+
     var demandStore = require('../plugin/db.js')('test_demand');
-    var now = new Date();
-    await demandStore.insert({
-      name: params.name,
-      platform: params.platform,
-      des: params.desc || params.des || '',
-      img: params.img && params.img.toString(),
-      status: 1,
-      addTime: dateformat(now, "yyyy-mm-dd HH:MM:ss"),
+    var res = await demandStore.update({
+      status: optMap[params.type]
+    },{
+      id: params.id,
       userId: user.id
     })
-    var cartridgesStore = require('../plugin/db.js')('test_cartridges');
-    var cartridges = await cartridgesStore.search({
-      userId: user.id
-    })
-    cxt.returnJson({
-      code: 200,
-      msg: '新增想要的卡带成功',
-      data: cartridges && cartridges.length > 0 ? 1 : 2
-    })
+    if(res && res.affectedRows > 0){
+      cxt.returnJson({
+        code: 200,
+        msg: '操作成功'
+      })
+    } else {
+      cxt.returnJson({
+        code: 500,
+        msg: '操作失败，无权限'
+      })
+    }
 	}
 }

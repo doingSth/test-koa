@@ -1,7 +1,7 @@
 var dateformat = require('dateformat')
 module.exports = {
 	method: 'post',
-	path: '/kd/demand/save',
+	path: '/kd/cartridge/save',
 	func: async(cxt, next) => {
     var params = cxt.request.body
     if (!params.name || !params.wxId) {
@@ -28,25 +28,18 @@ module.exports = {
       })
       return
     }
-    var demandStore = require('../plugin/db.js')('test_demand');
+    var cartridgesStore = require('../plugin/db.js')('test_cartridges');
     var now = new Date();
-    await demandStore.insert({
+    await cartridgesStore.insert({
       name: params.name,
       platform: params.platform,
-      des: params.desc || params.des || '',
-      img: params.img && params.img.toString(),
       status: 1,
       addTime: dateformat(now, "yyyy-mm-dd HH:MM:ss"),
       userId: user.id
     })
-    var cartridgesStore = require('../plugin/db.js')('test_cartridges');
-    var cartridges = await cartridgesStore.search({
-      userId: user.id
-    })
     cxt.returnJson({
       code: 200,
-      msg: '新增想要的卡带成功',
-      data: cartridges && cartridges.length > 0 ? 1 : 2
+      msg: '新增卡带成功'
     })
 	}
 }

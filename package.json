@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/doingSth/test-koa#readme",
   "dependencies": {
+    "dateformat": "^3.0.3",
     "koa": "^2.5.0",
     "koa-bodyparser": "^4.2.0",
     "koa-router": "^7.4.0",
